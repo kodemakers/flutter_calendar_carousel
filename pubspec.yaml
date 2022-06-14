@@ -1,6 +1,6 @@
 name: flutter_calendar_carousel
 description: Calendar widget for flutter that is swipeable. This widget can help you build customizable calendar with scrollable actions.
-version: 2.2.0
+version: 2.1.0
 homepage: https://github.com/dooboolab/flutter_calendar_carousel
 
 environment:
@@ -23,7 +23,7 @@ flutter:
 
   # To add assets to your package, add an assets section, like this:
   # assets:
-  #  - images/a_dot_burr.jpeg
+  #   - .../lib/assets/
   #  - images/a_dot_ham.jpeg
   #
   # For details regarding assets in packages, see

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import 'package:flutter_calendar_carousel/src/default_styles.dart'
-    show defaultWeekdayTextStyle;
+import 'package:flutter_calendar_carousel/src/default_styles.dart' show defaultWeekdayTextStyle;
 import 'package:intl/intl.dart';
 
 class WeekdayRow extends StatelessWidget {
@@ -28,7 +27,7 @@ class WeekdayRow extends StatelessWidget {
     final customWeekdayBuilder = this.customWeekdayBuilder;
     return customWeekdayBuilder != null
         ? customWeekdayBuilder(weekday, weekDayName)
-        : Expanded(
+        : Flexible(
             child: Container(
             decoration: BoxDecoration(
               border: Border.all(color: weekdayBackgroundColor),
@@ -40,7 +39,8 @@ class WeekdayRow extends StatelessWidget {
               child: DefaultTextStyle(
                 style: defaultWeekdayTextStyle,
                 child: Text(
-                  weekDayName,
+                  weekDayName.toUpperCase(),
+                  maxLines: 1,
                   semanticsLabel: weekDayName,
                   style: weekdayTextStyle,
                 ),
@@ -82,14 +82,11 @@ class WeekdayRow extends StatelessWidget {
 //    }
 //  }
 
-  // TODO - locale issues
   List<Widget> _renderWeekDays() {
     List<Widget> list = [];
 
     /// because of number of days in a week is 7, so it would be easier to count it til 7.
-    for (var i = firstDayOfWeek, count = 0;
-        count < 7;
-        i = (i + 1) % 7, count++) {
+    for (var i = firstDayOfWeek, count = 0; count < 7; i = (i + 1) % 7, count++) {
       String weekDay;
 
       switch (weekdayFormat) {

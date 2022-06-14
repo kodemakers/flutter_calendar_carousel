@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'default_styles.dart' show defaultHeaderTextStyle;
 
 class CalendarHeader extends StatelessWidget {
@@ -34,17 +35,15 @@ class CalendarHeader extends StatelessWidget {
 
   Widget _leftButton() => IconButton(
         onPressed: onLeftButtonPressed,
-        icon:
-            leftButtonIcon ?? Icon(Icons.chevron_left, color: headerIconColor),
+        icon: leftButtonIcon ?? Icon(Icons.chevron_left, color: headerIconColor),
       );
 
   Widget _rightButton() => IconButton(
         onPressed: onRightButtonPressed,
-        icon: rightButtonIcon ??
-            Icon(Icons.chevron_right, color: headerIconColor),
+        icon: rightButtonIcon ?? Icon(Icons.chevron_right, color: headerIconColor),
       );
 
-  Widget _headerTouchable() => FlatButton(
+  Widget _headerTouchable() => TextButton(
         onPressed: onHeaderTitlePressed,
         child: Text(
           headerTitle,
@@ -57,17 +56,17 @@ class CalendarHeader extends StatelessWidget {
   Widget build(BuildContext context) => showHeader
       ? Container(
           margin: headerMargin,
+          decoration: BoxDecoration(
+            color: const Color(0xff4B3788),
+            borderRadius: BorderRadius.circular(18),
+          ),
           child: DefaultTextStyle(
               style: getTextStyle,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    showHeaderButtons ? _leftButton() : Container(),
-                    isTitleTouchable
-                        ? _headerTouchable()
-                        : Text(headerTitle, style: getTextStyle),
-                    showHeaderButtons ? _rightButton() : Container(),
-                  ])),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
+                showHeaderButtons ? _leftButton() : Container(),
+                isTitleTouchable ? _headerTouchable() : Text(headerTitle, style: getTextStyle),
+                showHeaderButtons ? _rightButton() : Container(),
+              ])),
         )
       : Container();
 }

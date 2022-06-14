@@ -30,17 +30,18 @@ class MarkedDate implements MarkedDateInterface {
   @override
   Color getColor() => this.color;
 
+ 
   @override
   TextStyle? getTextStyle() => this.textStyle;
-
-  @override
-  // TODO: implement hashCode
-  int get hashCode => super.hashCode;
 }
+
+
+
 
 abstract class MarkedDateInterface {
   DateTime getDate();
   Color getColor();
   int? getId();
   TextStyle? getTextStyle();
+
 }
