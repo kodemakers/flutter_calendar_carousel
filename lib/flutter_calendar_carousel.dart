@@ -487,6 +487,9 @@ class _CalendarState<T extends EventInterface> extends State<CalendarCarousel<T>
             ],
           ),
         ),
+        SizedBox(
+          height: 30,
+        ),
         Stack(
           alignment: Alignment.center,
           children: [
