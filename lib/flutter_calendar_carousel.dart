@@ -7,9 +7,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/classes/event_list.dart';
-import 'package:flutter_calendar_carousel/src/calendar_challenge.dart';
 import 'package:flutter_calendar_carousel/src/calendar_header.dart';
 import 'package:flutter_calendar_carousel/src/default_styles.dart';
+import 'package:flutter_calendar_carousel/src/star_challenge.dart';
 import 'package:flutter_calendar_carousel/src/weekday_row.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
@@ -144,6 +144,12 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
   final Widget customLockWidget;
   final bool isDailyChallengeLoading;
   final bool isCalendarDataLoading;
+  final String startChallengeTitle;
+  final String startChallengeInfo;
+  final void Function() startChallengeInfoOnTap;
+  final Widget startChallengeIconWidget;
+  final double startChallengeProgress;
+  final bool isStarChallengeLoading;
 
   CalendarCarousel({
     Key? key,
@@ -164,8 +170,8 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
     this.selectedDateTime,
     this.targetDateTime,
     this.selectedDayTextStyle,
-    this.selectedDayBorderColor = Colors.green,
     this.selectedDayButtonColor = Colors.green,
+    this.selectedDayBorderColor = Colors.green,
     this.daysHaveCircularBorder,
     this.disableDayPressed = false,
     this.onDayPressed,
@@ -175,6 +181,9 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
     this.headerText,
     this.weekendTextStyle,
     this.markedDatesMap,
+    this.markedDateWidget,
+    this.markedDateCustomShapeBorder,
+    this.markedDateCustomTextStyle,
     this.markedDateShowIcon = false,
     this.markedDateIconBorderColor,
     this.markedDateIconMaxShown = 2,
@@ -183,22 +192,19 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
     this.markedDateIconBuilder,
     this.markedDateMoreShowTotal,
     this.markedDateMoreCustomDecoration,
-    this.markedDateCustomShapeBorder,
-    this.markedDateCustomTextStyle,
     this.markedDateMoreCustomTextStyle,
-    this.markedDateWidget,
-    this.multipleMarkedDates,
     this.headerMargin = const EdgeInsets.symmetric(vertical: 16.0),
     this.childAspectRatio = 1.0,
     this.weekDayMargin = const EdgeInsets.only(bottom: 4.0),
     this.weekDayPadding = const EdgeInsets.all(0.0),
-    this.weekDayBackgroundColor = Colors.transparent,
     this.customWeekDayBuilder,
     this.customDayBuilder,
-    this.showWeekDays = true,
+    this.weekDayBackgroundColor = Colors.transparent,
     this.weekFormat = false,
+    this.showWeekDays = true,
     this.showHeader = true,
     this.showHeaderButton = true,
+    this.multipleMarkedDates,
     this.leftButtonIcon,
     this.rightButtonIcon,
     this.customGridViewPhysics,
@@ -231,8 +237,14 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
     this.challengeProgress = 0,
     this.isPremium = false,
     required this.customLockWidget,
-    required this.isCalendarDataLoading,
     required this.isDailyChallengeLoading,
+    required this.isCalendarDataLoading,
+    required this.startChallengeTitle,
+    required this.startChallengeInfo,
+    required this.startChallengeInfoOnTap,
+    required this.startChallengeIconWidget,
+    required this.startChallengeProgress,
+    required this.isStarChallengeLoading,
   }) : super(key: key);
 
   @override
@@ -412,21 +424,21 @@ class _CalendarState<T extends EventInterface> extends State<CalendarCarousel<T>
                 }
               : null,
         ),
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            CalendarChallenge(
-              calendarChallengeMargin: widget.calendarChallengeMargin,
-              title: widget.challengeTitle,
-              subTitle: widget.challengeSubTitle,
-              progress: widget.challengeProgress,
-            ),
-            if (widget.isDailyChallengeLoading)
-              const CircularProgressIndicator(
-                color: Color(0xffDF64B8),
-              ),
-          ],
-        ),
+        // Stack(
+        //   alignment: Alignment.center,
+        //   children: [
+        //     CalendarChallenge(
+        //       calendarChallengeMargin: widget.calendarChallengeMargin,
+        //       title: widget.challengeTitle,
+        //       subTitle: widget.challengeSubTitle,
+        //       progress: widget.challengeProgress,
+        //     ),
+        //     if (widget.isDailyChallengeLoading)
+        //       const CircularProgressIndicator(
+        //         color: Color(0xffDF64B8),
+        //       ),
+        //   ],
+        // ),
         Flexible(
           child: Stack(
             // fit: StackFit.expand,
@@ -474,7 +486,23 @@ class _CalendarState<T extends EventInterface> extends State<CalendarCarousel<T>
                 widget.customLockWidget
             ],
           ),
-        )
+        ),
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            StarChallenge(
+              title: widget.startChallengeTitle,
+              progress: widget.startChallengeProgress,
+              icon: widget.startChallengeIconWidget,
+              infoText: widget.startChallengeInfo,
+              onInfoTap: widget.startChallengeInfoOnTap,
+            ),
+            if (widget.isStarChallengeLoading)
+              const CircularProgressIndicator(
+                color: Color(0xffDF64B8),
+              ),
+          ],
+        ),
       ],
     );
   }
