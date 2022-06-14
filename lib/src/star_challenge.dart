@@ -70,7 +70,12 @@ class StarChallenge extends StatelessWidget {
             child: Text(
               infoText,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Color(0xffDF64B8), fontSize: 12, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                color: Color(0xffDF64B8),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.underline,
+              ),
             ),
           )
         ],
