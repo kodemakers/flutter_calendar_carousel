@@ -4,19 +4,20 @@ import 'default_styles.dart' show defaultHeaderTextStyle;
 
 class CalendarHeader extends StatelessWidget {
   /// Passing in values for [leftButtonIcon] or [rightButtonIcon] will override [headerIconColor]
-  CalendarHeader(
-      {required this.headerTitle,
-      this.headerMargin,
-      required this.showHeader,
-      this.headerTextStyle,
-      this.showHeaderButtons = true,
-      this.headerIconColor,
-      this.leftButtonIcon,
-      this.rightButtonIcon,
-      required this.onLeftButtonPressed,
-      required this.onRightButtonPressed,
-      this.onHeaderTitlePressed})
-      : isTitleTouchable = onHeaderTitlePressed != null;
+  CalendarHeader({
+    required this.headerTitle,
+    this.headerMargin,
+    required this.showHeader,
+    this.headerTextStyle,
+    this.showHeaderButtons = true,
+    this.headerIconColor,
+    this.rightDisabled = false,
+    this.leftButtonIcon,
+    this.rightButtonIcon,
+    required this.onLeftButtonPressed,
+    required this.onRightButtonPressed,
+    this.onHeaderTitlePressed,
+  }) : isTitleTouchable = onHeaderTitlePressed != null;
 
   final String headerTitle;
   final EdgeInsetsGeometry? headerMargin;
@@ -26,6 +27,7 @@ class CalendarHeader extends StatelessWidget {
   final Color? headerIconColor;
   final Widget? leftButtonIcon;
   final Widget? rightButtonIcon;
+  final bool rightDisabled;
   final VoidCallback onLeftButtonPressed;
   final VoidCallback onRightButtonPressed;
   final bool isTitleTouchable;
@@ -39,8 +41,8 @@ class CalendarHeader extends StatelessWidget {
       );
 
   Widget _rightButton() => IconButton(
-        onPressed: onRightButtonPressed,
-        icon: rightButtonIcon ?? Icon(Icons.chevron_right, color: headerIconColor),
+        onPressed: rightDisabled ? null : onRightButtonPressed,
+        icon: rightButtonIcon ?? Icon(Icons.chevron_right, color: rightDisabled ? null : headerIconColor),
       );
 
   Widget _headerTouchable() => TextButton(
@@ -53,20 +55,25 @@ class CalendarHeader extends StatelessWidget {
       );
 
   @override
-  Widget build(BuildContext context) => showHeader
-      ? Container(
-          margin: headerMargin,
-          decoration: BoxDecoration(
-            color: const Color(0xff4B3788),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: DefaultTextStyle(
-              style: getTextStyle,
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[
-                showHeaderButtons ? _leftButton() : Container(),
-                isTitleTouchable ? _headerTouchable() : Text(headerTitle, style: getTextStyle),
-                showHeaderButtons ? _rightButton() : Container(),
-              ])),
-        )
-      : Container();
+  Widget build(BuildContext context) {
+    if (!showHeader) return SizedBox();
+    return Container(
+      margin: headerMargin,
+      decoration: BoxDecoration(
+        color: const Color(0xff4B3788),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: DefaultTextStyle(
+        style: getTextStyle,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            if (showHeaderButtons) _leftButton(),
+            isTitleTouchable ? _headerTouchable() : Text(headerTitle, style: getTextStyle),
+            if (showHeaderButtons) _rightButton(),
+          ],
+        ),
+      ),
+    );
+  }
 }
