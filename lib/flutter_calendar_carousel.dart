@@ -3,7 +3,6 @@
 library flutter_calendar_dooboo;
 
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -117,7 +116,7 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
   final String locale;
   final int? firstDayOfWeek;
   final DateTime? minSelectedDate;
-  final DateTime maxSelectedDate;
+  final DateTime? maxSelectedDate;
   final TextStyle? inactiveDaysTextStyle;
   final TextStyle? inactiveWeekendTextStyle;
   final bool headerTitleTouchable;
@@ -339,7 +338,7 @@ class _CalendarState<T extends EventInterface> extends State<CalendarCarousel<T>
     final sameYear = selectedDate.year == maxDate.year;
     final yearDisabled = sameYear || (selectedDate.year == (maxDate.year - 1) && selectedDate.month > (maxDate.month));
     final monthDisabled = sameYear && selectedDate.month == maxDate.month;
-    log("coco: ${widget.maxSelectedDate}");
+
     return ListView(
       children: <Widget>[
         CalendarHeader(
@@ -362,7 +361,7 @@ class _CalendarState<T extends EventInterface> extends State<CalendarCarousel<T>
           onRightButtonPressed: () {
             // widget.onRightArrowPressed?.call();
 
-            if (this._dates[this._pageNum].year != widget.maxSelectedDate.year) _setDate(this._pageNum + 12);
+            if (this._dates[this._pageNum].year != maxDate.year) _setDate(this._pageNum + 12);
 
             // if (widget.weekFormat) {
             //   if (this._weeks.length - 1 > this._pageNum) _setDate(this._pageNum + 1);
