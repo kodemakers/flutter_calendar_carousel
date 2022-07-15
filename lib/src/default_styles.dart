@@ -33,7 +33,7 @@ const TextStyle defaultWeekendTextStyle = const TextStyle(
   fontSize: 14.0,
 );
 const TextStyle defaultInactiveDaysTextStyle = const TextStyle(
-  color: Colors.black38,
+  color: Colors.grey,
   fontSize: 14.0,
 );
 final TextStyle defaultInactiveWeekendTextStyle = TextStyle(
