@@ -15,7 +15,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import 'classes/multiple_marked_dates.dart';
-import 'faltbutton.dart';
 
 export 'package:flutter_calendar_carousel/classes/event_list.dart';
 
@@ -81,7 +80,7 @@ class CalendarCarousel<T extends EventInterface> extends StatefulWidget {
   final Widget? markedDateWidget;
 
   /// Change `ShapeBorder` when `markedDateShowIcon` is set to false.
-  final ShapeBorder? markedDateCustomShapeBorder;
+  final OutlinedBorder? markedDateCustomShapeBorder;
 
   /// Change `TextStyle` when `markedDateShowIcon` is set to false.
   final TextStyle? markedDateCustomTextStyle;
@@ -558,51 +557,53 @@ class _CalendarState<T extends EventInterface> extends State<CalendarCarousel<T>
       clipBehavior: Clip.hardEdge,
       child: GestureDetector(
         onLongPress: () => _onDayLongPressed(now),
-        child: FlatButton(
-          color: isSelectedDay
-              ? widget.selectedDayButtonColor
-              : isToday
-                  ? widget.todayButtonColor
+        child: TextButton(
+          style: TextButton.styleFrom(
+            backgroundColor: isSelectedDay
+                ? widget.selectedDayButtonColor
+                : isToday
+                    ? widget.todayButtonColor
 
-                  // If day is in Multiple selection mode, apply a different color
-                  : isMultipleMarked
-                      ? multipleMarkedColor?.withOpacity(0.7)
-                      : widget.dayButtonColor,
+                    // If day is in Multiple selection mode, apply a different color
+                    : isMultipleMarked
+                        ? multipleMarkedColor?.withOpacity(0.7)
+                        : widget.dayButtonColor,
+            padding: EdgeInsets.all(widget.dayPadding),
+            shape: widget.markedDateCustomShapeBorder != null &&
+                    markedDatesMap != null &&
+                    markedDatesMap.getEvents(now).length > 0
+                ? widget.markedDateCustomShapeBorder
+                : widget.daysHaveCircularBorder == null
+                    ? const CircleBorder()
+                    : widget.daysHaveCircularBorder ?? false
+                        ? CircleBorder(
+                            side: BorderSide(
+                              color: isSelectedDay
+                                  ? widget.selectedDayBorderColor
+                                  : isToday
+                                      ? widget.todayBorderColor
+                                      : isPrevMonthDay
+                                          ? widget.prevMonthDayBorderColor
+                                          : isNextMonthDay
+                                              ? widget.nextMonthDayBorderColor
+                                              : widget.thisMonthDayBorderColor,
+                            ),
+                          )
+                        : RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: isSelectedDay
+                                  ? widget.selectedDayBorderColor
+                                  : isToday
+                                      ? widget.todayBorderColor
+                                      : isPrevMonthDay
+                                          ? widget.prevMonthDayBorderColor
+                                          : isNextMonthDay
+                                              ? widget.nextMonthDayBorderColor
+                                              : widget.thisMonthDayBorderColor,
+                            ),
+                          ),
+          ),
           onPressed: widget.disableDayPressed ? null : () => _onDayPressed(now),
-          padding: EdgeInsets.all(widget.dayPadding),
-          shape: widget.markedDateCustomShapeBorder != null &&
-                  markedDatesMap != null &&
-                  markedDatesMap.getEvents(now).length > 0
-              ? widget.markedDateCustomShapeBorder
-              : widget.daysHaveCircularBorder == null
-                  ? const CircleBorder()
-                  : widget.daysHaveCircularBorder ?? false
-                      ? CircleBorder(
-                          side: BorderSide(
-                            color: isSelectedDay
-                                ? widget.selectedDayBorderColor
-                                : isToday
-                                    ? widget.todayBorderColor
-                                    : isPrevMonthDay
-                                        ? widget.prevMonthDayBorderColor
-                                        : isNextMonthDay
-                                            ? widget.nextMonthDayBorderColor
-                                            : widget.thisMonthDayBorderColor,
-                          ),
-                        )
-                      : RoundedRectangleBorder(
-                          side: BorderSide(
-                            color: isSelectedDay
-                                ? widget.selectedDayBorderColor
-                                : isToday
-                                    ? widget.todayBorderColor
-                                    : isPrevMonthDay
-                                        ? widget.prevMonthDayBorderColor
-                                        : isNextMonthDay
-                                            ? widget.nextMonthDayBorderColor
-                                            : widget.thisMonthDayBorderColor,
-                          ),
-                        ),
           child: Stack(
             children: widget.showIconBehindDayText
                 ? <Widget>[
